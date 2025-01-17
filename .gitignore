@@ -1,0 +1,34 @@
+# Ignore build artifacts
+ttp_server
+ssl_client
+
+# Object files
+*.o
+
+# Dependency files
+*.d
+
+# Certificate files
+certs/*.crt
+certs/*.key
+certs/*.csr
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Backup files
+*.bak
+*.swp
+
+# System-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+*.iml
+
+# Other
+*.out
