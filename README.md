@@ -125,7 +125,3 @@ Feel free to open issues or submit pull requests for improvements.
 ## Contact
 
 Created by [Kidus Alemayehu](https://github.com/KidusAlemayehu).
-
-```
-
-```
