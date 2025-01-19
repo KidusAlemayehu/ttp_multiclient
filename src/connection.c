@@ -14,7 +14,9 @@
 void handle_connection(SSL *ssl, int client_fd){
     char buffer[1024];
     int bytes_count;
-    rate_limiter_t limiter = {time(NULL), 0};
+    char ip_addr[16];
+
+    get_client_ip_addr(client_fd, ip_addr);
 
     while (1)
     {
@@ -27,14 +29,13 @@ void handle_connection(SSL *ssl, int client_fd){
             }
             break;
         }
-        if(!check_rate_limit(&limiter)){
+        if(!check_rate_limit(ip_addr)){
             printf("Rate Limit exceeded ...\n");
             break;
         }
 
         buffer[bytes_count] = '\0';
         printf("Received data: %s\n", buffer);
-
         const char *response = "Data received successfully"; 
         SSL_write(ssl, response, strlen(response));
     }

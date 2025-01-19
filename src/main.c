@@ -9,7 +9,6 @@
 #include <openssl/rand.h>
 #include "socket_utils.h"
 #include "ssl_utils.c"
-
 #include "connection.h"
 #include "config.h"
 #include "logger.h"
