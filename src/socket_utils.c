@@ -4,17 +4,18 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include "socket_utils.h"
+#include "logger.h"
 
 int create_socket(int port) {
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd < 0) {
-        perror("Socket creation failed");
+        log_error("Socket creation failed");
         exit(EXIT_FAILURE);
     }
 
     int opt = 1;
     if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
-        perror("setsockopt failed");
+        log_error("setsockopt failed");
         close(server_fd);
         exit(EXIT_FAILURE);
     }
@@ -25,14 +26,14 @@ int create_socket(int port) {
     address.sin_port = htons(port);
 
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
-        perror("Bind failed");
+        log_error("Bind failed");
         close(server_fd);
         exit(EXIT_FAILURE);
     }
     printf("Bind to port %d successful\n", port);
 
     if (listen(server_fd, 10) < 0) {
-        perror("Listen failed");
+        log_error("Listen failed");
         close(server_fd);
         exit(EXIT_FAILURE);
     }

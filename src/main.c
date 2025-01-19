@@ -9,7 +9,11 @@
 #include <openssl/rand.h>
 #include "socket_utils.h"
 #include "ssl_utils.c"
-#include "rate_limiter.c"
+
+#include "connection.h"
+#include "config.h"
+#include "logger.h"
+
 
 #define PORT 8050
 
@@ -23,26 +27,9 @@ void* client_handler    (void* arg){
     int client_fd = client_info->client_fd;
     SSL *ssl = client_info->ssl;
 
-    rate_limiter_t limiter = {time(NULL), 0};
+    log_info("Handling new SSL connection ...");
+    handle_connection(ssl, client_fd);
 
-    char buffer[1024];
-    int bytes;
-
-    while ((bytes = SSL_read(ssl, buffer, sizeof(buffer))) > 0){
-        if(!check_rate_limit(&limiter)){
-            printf("Rate Limit exceeded ...\n");
-            break;
-        }
-        printf("Received data: %s\n", buffer);
-
-        if (SSL_write(ssl, buffer, bytes) <= 0) {
-            perror("SSL_write failed");
-            break;
-        }
-    }
-
-    SSL_free(ssl);
-    close(client_fd);
     free(client_info);
     return NULL;
 }

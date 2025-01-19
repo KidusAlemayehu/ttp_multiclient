@@ -32,3 +32,8 @@ Thumbs.db
 
 # Other
 *.out
+
+server.crt
+server.key
+
+ssl_client_go
